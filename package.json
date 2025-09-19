@@ -1,0 +1,26 @@
+{
+  "name": "i-taunted",
+  "version": "1.0.0",
+  "description": "An add-on for World of Warcraft to help raids see easier when a tank taunted a boss or mob. It supports raid target icons to add a visual aid.",
+  "homepage": "https://github.com/gitaarwerk/i-taunted#readme",
+  "bugs": {
+    "url": "https://github.com/gitaarwerk/i-taunted/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitaarwerk/i-taunted.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "minify-lua.js",
+  "scripts": {
+    "compile": "node minify-lua.js ./public/Src ./public/Dist --copy-extra",
+    "minify": "node minify-lua.js ./public/Src ./public/Dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "luamin": "^1.0.4",
+    "luaparse": "^0.3.1"
+  }
+}

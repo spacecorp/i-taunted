@@ -10,6 +10,13 @@ ignore: # Files and directories beginning with a dot (such as .git) are automati
   - README.md
   - pkgmeta.yaml
   - .gitignore
+  - node_modules
+  - package.json
+  - package-lock.json
+  - public/Src
+  - .idea
+  - .vscode
+  - .DS_Store
 
 license-output: LICENSE.txt
 

@@ -1,6 +1,6 @@
 ## Title: ITaunted
-## Interface: 110107, 110200
-## X-Min-Interface: 110107, 110200
+## Interface: 110200
+## X-Min-Interface: 110200
 ## X-Future-Interface: TBA
 ## Version: @project-version@
 ## Author: Darkrider - Talnivarr (EU)
@@ -16,4 +16,4 @@
 ## SavedVariablesPerCharacter: ITauntedVars
 ## DefaultState: enabled
 
-Src/Main.xml
+Dist/Main.xml

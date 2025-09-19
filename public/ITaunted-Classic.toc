@@ -16,4 +16,4 @@
 ## SavedVariablesPerCharacter: ITauntedVars
 ## DefaultState: enabled
 
-Src/Main.xml
+Dist/Main.xml
