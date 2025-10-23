@@ -2,8 +2,8 @@
 ## Interface: 40402
 ## X-Min-Interface: 40402
 ## X-Future-Interface: TBA
-## Version: @project-version@
-## Author: Darkrider - Dunemaul (EU)
+## Version: @version@
+## Author: @author@
 ## IconTexture: Interface\AddOns\ITaunted\addonIcon.jpg
 ## X-Website: https://www.curseforge.com/wow/addons/i-taunted
 ## Notes: Very light weight single line chat-message when you, your pet taunted a target. Only works in raids.

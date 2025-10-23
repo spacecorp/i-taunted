@@ -1,6 +1,5 @@
 {
   "name": "i-taunted",
-  "version": "1.0.0",
   "description": "An add-on for World of Warcraft to help raids see easier when a tank taunted a boss or mob. It supports raid target icons to add a visual aid.",
   "homepage": "https://github.com/gitaarwerk/i-taunted#readme",
   "bugs": {

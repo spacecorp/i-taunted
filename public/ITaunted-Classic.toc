@@ -2,7 +2,7 @@
 ## Interface: 11507
 ## X-Min-Interface: 11507
 ## X-Future-Interface: TBA
-## Version: @project-version@
+## Version: @version@
 ## Author: Darkrider - Dunemaul (EU)
 ## IconTexture: Interface\AddOns\ITaunted\addonIcon.jpg
 ## X-Website: https://www.curseforge.com/wow/addons/i-taunted
