@@ -14,23 +14,21 @@ jobs:
       # 1️⃣ Checkout repository
       - uses: actions/checkout@v4
 
+      # 2️⃣ Determine addon version (tag or short git hash)
       - name: Determine addon version
         run: |
-            if [[ "${GITHUB_REF_TYPE}" == "tag" ]] || [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             VERSION="${GITHUB_REF_NAME}"
-            else
-            # Short git hash as fallback version
+          else
             VERSION=$(git rev-parse --short HEAD)
-            fi
+          fi
+          echo "Using version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-            echo "Using version: $VERSION"
-            echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-      # 2️⃣ Read JSON variables and replace placeholders
+      # 3️⃣ Read JSON variables and replace placeholders
       - name: Read variables and replace placeholders
         run: |
           VARS=$(cat addon-info.json)
-
           TARGET_DIR=$(echo "$VARS" | jq -r '.target_dir')
           ADDON_NAME=$(echo "$VARS" | jq -r '.addon_name')
           CURSEFORGE_PROJECT_ID=$(echo "$VARS" | jq -r '.curseforge_project_id')
@@ -40,57 +38,69 @@ jobs:
           echo "ADDON_NAME=$ADDON_NAME"
           echo "CURSEFORGE_PROJECT_ID=$CURSEFORGE_PROJECT_ID"
 
-          # Set as environment variables for later steps
+          # Set environment variables for later steps
           echo "TARGET_DIR=$TARGET_DIR" >> $GITHUB_ENV
           echo "ADDON_NAME=$ADDON_NAME" >> $GITHUB_ENV
           echo "CURSEFORGE_PROJECT_ID=$CURSEFORGE_PROJECT_ID" >> $GITHUB_ENV
 
-          # Generate ISO datetime
+          # Replace @datetime@
           ISO_DATETIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          echo "Replacing @datetime@ → $ISO_DATETIME"
           grep -rl "@datetime@" "$TARGET_DIR" 2>/dev/null | xargs -r sed -i "s|@datetime@|$ISO_DATETIME|g"
 
-          # Replace version from tag or use default branch name
-          VERSION="${VERSION}"
-          echo "Replacing @version@ → $VERSION in $TARGET_DIR"
+          # Replace @version@
           grep -rl "@version@" "$TARGET_DIR" 2>/dev/null | xargs -r sed -i "s|@version@|$VERSION|g"
 
           # Replace other @key@ placeholders from JSON
           for key in $(echo "$VARS" | jq -r 'keys[]'); do
-            if [[ "$key" == "target_dir" ]] || [[ "$key" == "addon_name" ]] || [[ "$key" == "curseforge_project_id" ]]; then
-              continue
-            fi
             value=$(echo "$VARS" | jq -r --arg k "$key" '.[$k]')
             grep -rl "@${key}@" "$TARGET_DIR" 2>/dev/null | xargs -r sed -i "s|@${key}@|$value|g"
           done
 
-      # 3️⃣ NPM install
+      # 4️⃣ NPM install
       - name: Install NPM dependencies
         working-directory: ${{ env.TARGET_DIR }}
         run: npm install
 
-      # 4️⃣ NPM compile
+      # 5️⃣ NPM compile
       - name: Compile addon
         working-directory: ${{ env.TARGET_DIR }}
         run: npm run compile
 
-      # 5️⃣ Zip addon excluding files from JSON
+      # 6️⃣ Zip addon excluding files from JSON
       - name: Package addon into ZIP
         run: |
-          EXCLUDE_LIST=$(jq -r '.exclude[]' addon-info.json | sed 's/^/-x /')
-          echo "Excluding files/directories: $EXCLUDE_LIST"
+            BUILD_DIR="$(pwd)/build"
+            mkdir -p "$BUILD_DIR"
 
-          mkdir -p build
-          # shellcheck disable=SC2086
-          zip -r build/${ADDON_NAME}-${VERSION}.zip "${TARGET_DIR}" $EXCLUDE_LIST
+            TMP_DIR=$(mktemp -d)
+            cp -r "${TARGET_DIR}" "${TMP_DIR}/${ADDON_NAME}"
 
-      - name: Upload addon zip as artifact
-        uses: actions/upload-artifact@v3
+            cd "${TMP_DIR}/${ADDON_NAME}"
+
+            # Remove excluded files/directories first
+            jq -r '.exclude[]' "${GITHUB_WORKSPACE}/addon-info.json" | while read pattern; do
+            # delete matching files/folders recursively
+            find . -iname "$pattern" -exec rm -rf {} +
+            done
+
+            cd ..
+
+            # Zip the addon folder
+            zip -r "${BUILD_DIR}/${ADDON_NAME}-${VERSION}.zip" "${ADDON_NAME}"
+
+
+      # 7️⃣ Upload ZIP as artifact (v4)
+      - name: Upload addon ZIP as artifact
+        uses: actions/upload-artifact@v4
         with:
-            name: ${ADDON_NAME}-${VERSION}
-            path: build/${ADDON_NAME}-${VERSION}.zip
+            name: ${{ env.ADDON_NAME }}-${{ env.VERSION }}
+            path: build/${{ env.ADDON_NAME }}-${{ env.VERSION }}.zip
+            if-no-files-found: warn
+            compression-level: 6
+            overwrite: false
+            include-hidden-files: false
 
-      # 6️⃣ Upload to CurseForge (optional)
+      # 8️⃣ Upload to CurseForge (optional)
       # - name: Upload to CurseForge
       #   run: |
       #     curl -X POST "https://wow.curseforge.com/api/projects/${{ env.CURSEFORGE_PROJECT_ID }}/upload-file" \
