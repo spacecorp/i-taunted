@@ -9,7 +9,7 @@ on:
       - '*'
     branches:
       - '**'       # Trigger on any branch push
-      
+
 jobs:
   replace-variables:
     uses: ./.github/workflows/replace-variables.yml
@@ -58,10 +58,10 @@ jobs:
           # shellcheck disable=SC2086
           zip -r build/${ADDON_NAME}-${GITHUB_REF_NAME}.zip "${TARGET_DIR}" $EXCLUDE_LIST
 
-      - name: Upload to CurseForge
-        run: |
-          ADDON_NAME="${{ env.ADDON_NAME }}"
-          curl -X POST "https://wow.curseforge.com/api/projects/${{ secrets.CF_PROJECT_ID }}/upload-file" \
-            -H "x-api-token: ${{ secrets.CF_API_TOKEN }}" \
-            -F "file=@build/${ADDON_NAME}-${GITHUB_REF_NAME}.zip" \
-            -F "metadata={\"changelog\":\"Auto build for $GITHUB_REF_NAME\",\"releaseType\":\"release\",\"gameVersions\":[${{ secrets.CF_GAME_VERSION_IDS }}]}"
+    #   - name: Upload to CurseForge
+    #     run: |
+    #       ADDON_NAME="${{ env.ADDON_NAME }}"
+    #       curl -X POST "https://wow.curseforge.com/api/projects/${{ secrets.CF_PROJECT_ID }}/upload-file" \
+    #         -H "x-api-token: ${{ secrets.CF_API_TOKEN }}" \
+    #         -F "file=@build/${ADDON_NAME}-${GITHUB_REF_NAME}.zip" \
+    #         -F "metadata={\"changelog\":\"Auto build for $GITHUB_REF_NAME\",\"releaseType\":\"release\",\"gameVersions\":[${{ secrets.CF_GAME_VERSION_IDS }}]}"
