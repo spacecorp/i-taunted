@@ -13,10 +13,12 @@ ignore: # Files and directories beginning with a dot (such as .git) are automati
   - node_modules
   - package.json
   - package-lock.json
+  - scripts
+  - tests
+  - pnpm-lock.yaml
   - public/Src
   - .idea
   - .vscode
   - .DS_Store
 
 license-output: LICENSE.txt
-
