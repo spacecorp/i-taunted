@@ -13,16 +13,19 @@ Sure, WeakAuras provides a lot more. It's awesome! But... It is also a lot more 
 * AoE/Mass taunts are limited to cast when a target is successfully taunted, and has a cooldown of 8 hard seconds to prevent spam.
 
 ## Supported game versions
-- World of Warcraft (Retail)
+- World of Warcraft (Retail / Midnight)
+- WoW: Forever
 - World of Warcraft Classic (Vanilla)
 - World of Warcraft Classic: Catacalysm (Cata)
+- World of Warcraft Classic: Mists of Pandaria (MoP)
 - World of Warcraft Classic: The Burning Crusade (TBC)
 - World of Warcraft Classic: Wrath of the Lich King (WOTLK)
 
 ## Supported spells
 ### AoE/Mass taunts
-- isrupting Shout
+- Disrupting Shout
 - Challenging Shout
+- Challenging Roar
 - Ravager taunt
 - Final Stand
 - Righteous Defense
@@ -36,9 +39,11 @@ Sure, WeakAuras provides a lot more. It's awesome! But... It is also a lot more 
 ### Single target taunts
 - Taunt
 - Mammoth Trumpet
+- Mocking Blow (Classic flavors)
 - Death Grip for Blood (49576 is now just the pull effect)
 - Dark Command
 - Hand of Reckoning
+- Judgement while Seal of Fury is active (WoW: Forever)
 - Growl
 - Distracting Shot
 - Distracting Shot #2

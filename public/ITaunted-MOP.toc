@@ -1,6 +1,6 @@
 ## Title: ITaunted
-## Interface: 50500
-## X-Min-Interface: 50500
+## Interface: 50504
+## X-Min-Interface: 50504
 ## X-Future-Interface: TBA
 ## Version: @project-version@
 ## Author: Darkrider - Dunemaul (EU)
@@ -16,4 +16,4 @@
 ## SavedVariablesPerCharacter: ITauntedVars
 ## DefaultState: enabled
 
-Dist/Main.xml
+Src/Main.xml
